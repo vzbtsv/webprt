@@ -19,5 +19,9 @@ class News(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey("users.id"))
     user = orm.relationship('User')
 
+    categories = orm.relationship("Category",
+                                  secondary="association",
+                                  backref="news")
+
     def __repr__(self):
         return (f"<News> {self.title} {self.content} {self.created_date}")
