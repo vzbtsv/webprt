@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from .db_session import SqlAlchemyBase
 
 
@@ -15,8 +16,22 @@ class User(SqlAlchemyBase):
     email = Column(String, unique=True)
     hashed_password = Column(String)
     modified_date = Column(DateTime)
+    led_jobs = relationship(
+        "Job",
+        back_populates="team_leader",
+        cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
-        return (f"{self.surname} {self.name} {self.age} "
-                f"{self.position} {self.speciality}\n"
-                f"{self.address} {self.email} {self.hashed_password}")
+        return (
+            self.id,
+            self.surname,
+            self.name,
+            self.age,
+            self.position,
+            self.speciality,
+            self.address,
+            self.email,
+            self.hashed_password,
+            self.modified_date
+        )
